@@ -18,6 +18,24 @@ architecture Behavioral of Register_file is
 
 begin
 
-
+        type ram_type is array (0 to 39) of std_logic_vector (31 downto 0);
+	signal registers : ram_type :=(others => x"00000000");
+	
+	process(RST,rs1,rs2,rd,DataToWrite)
+	begin
+            if(RST = '1')then
+                Crs1 <= (others=>'0');
+                Crs2 <= (others=>'0');
+                registers <= (others => x"00000000");
+                
+            else
+                Crs1 <= registers(conv_integer(rs1));
+		Crs2 <= registers(conv_integer(rs2));
+		if(rd /= "000000")then
+                    registers(conv_integer(rd)) <= DataToWrite;
+                    
+                end if;
+            end if;
+        end process
 end Behavioral;
 
