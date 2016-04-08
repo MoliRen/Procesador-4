@@ -1,0 +1,1 @@
+vhdtdtfi -prj procesador1 -o C:/Users/utp.CRIE/procesador1/InstructionMemory.vhi -module InstructionMemory -template C:/Xilinx/14.7/ISE_DS/ISE//data/vhdlinst.tft -deleteonerror -lib work ../Desktop/procesador-master/InstructionMemory.vhd 
