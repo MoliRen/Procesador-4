@@ -1,4 +1,3 @@
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
@@ -74,61 +73,70 @@ architecture Behavioral of Procesador is
 	END COMPONENT;
 
 
+signal SUM_out : STD_LOGIC_VECTOR (31 downto 0); -- 1
+signal PC_out : STD_LOGIC_VECTOR (31 downto 0); -- 2
+signal PC2_out : STD_LOGIC_VECTOR (31 downto 0); -- 3
+signal im_out : STD_LOGIC_VECTOR (31 downto 0); -- 4
+signal Crs1_out, Crs2_out, dataToWrite_out : STD_LOGIC_VECTOR (31 downto 0); -- 5
+signal ALU_OP_out : STD_LOGIC_VECTOR (5 downto 0); -- 6
+
+
 begin
 
 	Inst_ALU: ALU PORT MAP(
-		ALU_OP => ,
-		CRs1 => ,
-		CRs2 => ,
-		ALU_Result => 
+		ALU_OP => ALU_OP_out ,
+		CRs1 => Crs1_out,
+		CRs2 => Crs2_out,
+		ALU_Result => dataToWrite_out
 	);
 
 	Inst_ADD: ADD PORT MAP(
-		PC_OUT => ,
-		SUM => 
+		PC_OUT => PC_out,
+		SUM => SUM_out
 	);
 	
 
 	
 	Inst_CU: CU PORT MAP(
-		OP => ,
-		OP3 => ,
-		ALU_OP => 
+		OP => im_out(31 downto 30) ,
+		OP3 => im_out(24 downto 19) ,
+		ALU_OP => ALU_OP_out
 	);
 
 	
 	Inst_InstructionMemory: InstructionMemory PORT MAP(
-		RST => ,
-		Address => ,
-		instruction_out => 
+		RST => RST ,
+		Address => PC2_out ,
+		instruction_out => im_out 
 	);
 	
 
 
 	Inst_Register_file: Register_file PORT MAP(
-		rs1 => ,
-		rs2 => ,
-		rd => ,
-		RST => ,
-		DataToWrite => ,
-		Crs1 => ,
-		Crs2 => 
+		rs1 => im_out (18 downto 14), 
+		rs2 => im_out (4 downto 0),
+		rd => im_out (29 downto 25) ,
+		RST => RST ,
+		DataToWrite => dataToWrite_out  ,
+		Crs1 => Crs1_out,
+		Crs2 => Crs2_out
 	);
 	
-	Inst_PC: PC PORT MAP(
-		PC_IN => ,
-		CLK => ,
-		RST => ,
-		PC_OUT => 
+	Inst_PC: PC PORT MAP( --npc
+		PC_IN => SUM_out,
+		CLK => CLK,
+		RST => RST,
+		PC_OUT => PC_out
 	);
 	
 	Inst_PC2: PC PORT MAP(
-		PC_IN => ,
-		CLK => ,
-		RST => ,
-		PC_OUT => 
+		PC_IN => PC_out,
+		CLK => CLK ,
+		RST => RST,
+		PC_OUT => PC2_out 
 	);
 
-
+	S <= dataToWrite_out;
+	
 end Behavioral;
 

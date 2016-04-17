@@ -1,1 +1,0 @@
--intstyle "ise" -incremental -o "C:/Users/utp.CRIE/procesador1/TB_RF_isim_beh.exe" -prj "C:/Users/utp.CRIE/procesador1/TB_RF_beh.prj" "work.TB_RF" 

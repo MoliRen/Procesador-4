@@ -6,53 +6,59 @@ USE ieee.std_logic_1164.ALL;
 -- arithmetic functions with Signed or Unsigned values
 --USE ieee.numeric_std.ALL;
  
-ENTITY TB_InstructionMemory IS
-END TB_InstructionMemory;
+ENTITY TB_procesador IS
+END TB_procesador;
  
-ARCHITECTURE behavior OF TB_InstructionMemory IS 
+ARCHITECTURE behavior OF TB_procesador IS 
  
     -- Component Declaration for the Unit Under Test (UUT)
  
-    COMPONENT InstructionMemory
+    COMPONENT Procesador
     PORT(
+         CLK : IN  std_logic;
          RST : IN  std_logic;
-         Address : IN  std_logic_vector(31 Downto 0);
-         instruction_out : OUT  std_logic_vector(31 Downto 0)
+         S : OUT  std_logic_vector(31 downto 0)
         );
     END COMPONENT;
     
 
    --Inputs
+   signal CLK : std_logic := '0';
    signal RST : std_logic := '0';
-   signal Address : std_logic_vector(0 to 31) := (others => '0');
 
  	--Outputs
-   signal instruction_out : std_logic_vector(0 to 31);
-   -- No clocks detected in port list. Replace <clock> below with 
-   -- appropriate port name 
+   signal S : std_logic_vector(31 downto 0);
 
+   -- Clock period definitions
+   constant CLK_period : time := 10 ns;
+ 
 BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
-   uut: InstructionMemory PORT MAP (
+   uut: Procesador PORT MAP (
+          CLK => CLK,
           RST => RST,
-          Address => Address,
-          instruction_out => instruction_out
+          S => S
         );
 
+   -- Clock process definitions
+   CLK_process :process
+   begin
+		CLK <= '0';
+		wait for CLK_period/2;
+		CLK <= '1';
+		wait for CLK_period/2;
+   end process;
  
 
    -- Stimulus process
    stim_proc: process
    begin		
       -- hold reset state for 100 ns.
-		RST <='1';
-		
+		RST <= '1';
       wait for 100 ns;	
+		
 		RST <= '0';
-		Address <= x"00000001";
-
-      -- insert stimulus here 
 
       wait;
    end process;
